@@ -4,12 +4,12 @@
     "authors": [
         {
             "name": "comodojo",
-            "email": "devel@comodojo.org"
+            "email": "info@comodojo.org"
         }
     ],
     "autoload": {
-        "psr-0": {
-            "comodojo\\Dispatcher\\Template\\TemplateBootstrap": "TemplateBootstrap.php"
+        "psr-4": {
+            "comodojo\\Dispatcher\\Template\\": ""
         }
     }
 }
