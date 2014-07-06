@@ -111,7 +111,7 @@ class TemplateBootstrap implements TemplateInterface {
 
 	public function addScript($source) {
 
-		array_push($this->scripts, '<script src="'.$source.'" "></script>');
+		array_push($this->scripts, '<script src="'.$source.'"></script>');
 
 		return $this;
 
