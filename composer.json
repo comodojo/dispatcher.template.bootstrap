@@ -1,0 +1,15 @@
+{
+    "name": "comodojo/dispatcher.template.bootstrap",
+    "description": "template bootstrap",
+    "authors": [
+        {
+            "name": "comodojo",
+            "email": "devel@comodojo.org"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "comodojo\\Dispatcher\\Template\\TemplateBootstrap": "TemplateBootstrap.php"
+        }
+    }
+}
