@@ -1,234 +1,232 @@
-<?php namespace comodojo\Dispatcher\Template;
+<?php namespace Comodojo\Dispatcher\Template;
 
 class TemplateBootstrap implements TemplateInterface {
 
-	private $template = NULL;
+    private $template = NULL;
 
-	private $right_nav = Array();
+    private $right_nav = Array();
 
-	private $left_nav = Array();
+    private $left_nav = Array();
 
-	private $side_nav = Array();
+    private $side_nav = Array();
 
-	private $scripts = Array();
+    private $scripts = Array();
 
-	private $title = NULL;
+    private $title = NULL;
 
-	private $brand = NULL;
+    private $brand = NULL;
 
-	private $content = NULL;
+    private $content = NULL;
 
-	public function __construct($page="basic") {
+    public function __construct($page="basic") {
 
-		$template_path = DISPATCHER_REAL_PATH."vendor/comodojo/dispatcher.template.bootstrap/resources/html/";
+        $template_path = DISPATCHER_REAL_PATH."vendor/comodojo/dispatcher.template.bootstrap/resources/html/";
 
-		switch ($page) {
+        switch ($page) {
 
-			case 'navbar':
-				$this->template = file_get_contents($template_path."navbar.html");
-				break;
+            case 'navbar':
+                $this->template = file_get_contents($template_path."navbar.html");
+                break;
 
-			case 'dash':
-				$this->template = file_get_contents($template_path."dash.html");
-				break;
-			
-			case 'basic':
-			default:
-				$this->template = file_get_contents($template_path."basic.html");
-				break;
+            case 'dash':
+                $this->template = file_get_contents($template_path."dash.html");
+                break;
+            
+            case 'basic':
+            default:
+                $this->template = file_get_contents($template_path."basic.html");
+                break;
 
-		}	
+        }   
 
-	}
+    }
 
-	public function addDropdown($drop, $items, $menu="left") {
+    public function addDropdown($drop, $items, $menu="left") {
 
-		switch ( strtolower($menu) ) {
+        switch ( strtolower($menu) ) {
 
-			case 'left':
-				$this->left_nav[$drop] = $items;
-				break;
+            case 'left':
+                $this->left_nav[$drop] = $items;
+                break;
 
-			case 'right':
-				$this->right_nav[$drop] = $items;
-				break;
+            case 'right':
+                $this->right_nav[$drop] = $items;
+                break;
 
-			case 'side':
-				$this->side_nav[$drop] = $items;
-				break;
+            case 'side':
+                $this->side_nav[$drop] = $items;
+                break;
 
-		}
+        }
 
-		return $this;
+        return $this;
 
-	}
+    }
 
-	public function addMenuItem($item, $href, $menu="left") {
+    public function addMenuItem($item, $href, $menu="left") {
 
-		switch ( strtolower($menu) ) {
+        switch ( strtolower($menu) ) {
 
-			case 'left':
-				$this->left_nav[$item] = $href;
-				break;
+            case 'left':
+                $this->left_nav[$item] = $href;
+                break;
 
-			case 'right':
-				$this->right_nav[$item] = $href;
-				break;
+            case 'right':
+                $this->right_nav[$item] = $href;
+                break;
 
-			case 'side':
-				$this->side_nav[$item] = $href;
-				break;
+            case 'side':
+                $this->side_nav[$item] = $href;
+                break;
 
-		}
+        }
 
-		return $this;
+        return $this;
 
-	}
+    }
 
-	public function setTitle($title) {
+    public function setTitle($title) {
 
-		$this->title = $title;
+        $this->title = $title;
 
-		return $this;
+        return $this;
 
-	}
+    }
 
-	public function setBrand($brand) {
+    public function setBrand($brand) {
 
-		$this->brand = $brand;
+        $this->brand = $brand;
 
-		return $this;
+        return $this;
 
-	}
+    }
 
-	public function setContent($content) {
+    public function setContent($content) {
 
-		$this->content = $content;
+        $this->content = $content;
 
-		return $this;
+        return $this;
 
-	}
+    }
 
-	public function addScript($source) {
+    public function addScript($source) {
 
-		array_push($this->scripts, '<script src="'.$source.'"></script>');
+        array_push($this->scripts, '<script src="'.$source.'"></script>');
 
-		return $this;
+        return $this;
 
-	}
+    }
 
-	public function replace($tag, $data) {
+    public function replace($tag, $data) {
 
-		$this->template = str_replace($tag, $data, $this->template);
+        $this->template = str_replace($tag, $data, $this->template);
 
-	}
+    }
 
-	public function serialize() {
+    public function serialize() {
 
-		if ( sizeof($this->left_nav) != 0 ) {
+        if ( sizeof($this->left_nav) != 0 ) {
 
-			$nav = '<ul class="nav navbar-nav">';
+            $nav = '<ul class="nav navbar-nav">';
 
-			foreach ($this->left_nav as $key => $value) {
+            foreach ($this->left_nav as $key => $value) {
 
-				if ( is_array($value) ) {
+                if ( is_array($value) ) {
 
-					$nav .= '<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$key.'<span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">';
+                    $nav .= '<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$key.'<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">';
 
-					foreach ($value as $mkey => $mvalue) {
-						$nav .=  '<li><a href="' . $mvalue . '">' . $mkey . '</a></li>';
-					}
+                    foreach ($value as $mkey => $mvalue) {
+                        $nav .=  '<li><a href="' . $mvalue . '">' . $mkey . '</a></li>';
+                    }
 
-					$nav .= '</ul></li>';
+                    $nav .= '</ul></li>';
 
-				}
-				else $nav .= '<li><a href="'.$value.'">'.$key.'</a></li>';
-			}
-			
-			$nav .= '</ul>';
+                }
+                else $nav .= '<li><a href="'.$value.'">'.$key.'</a></li>';
+            }
+            
+            $nav .= '</ul>';
 
-			$this->replace("__NAVBAR_LEFT__",$nav);
+            $this->replace("__NAVBAR_LEFT__",$nav);
 
-		}
+        }
 
-		else $this->replace("__NAVBAR_LEFT__","");
+        else $this->replace("__NAVBAR_LEFT__","");
 
-		if ( sizeof($this->right_nav) != 0 ) {
+        if ( sizeof($this->right_nav) != 0 ) {
 
-			$nav = '<ul class="nav navbar-nav navbar-right">';
+            $nav = '<ul class="nav navbar-nav navbar-right">';
 
-			foreach ($this->right_nav as $key => $value) {
+            foreach ($this->right_nav as $key => $value) {
 
-				if ( is_array($value) ) {
+                if ( is_array($value) ) {
 
-					$nav .= '<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$key.'<span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">';
+                    $nav .= '<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$key.'<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">';
 
-					foreach ($value as $mkey => $mvalue) {
-						$nav .=  '<li><a href="' . $mvalue . '">' . $mkey . '</a></li>';
-					}
+                    foreach ($value as $mkey => $mvalue) {
+                        $nav .=  '<li><a href="' . $mvalue . '">' . $mkey . '</a></li>';
+                    }
 
-					$nav .= '</ul></li>';
-					
-				}
-				else $nav .= '<li><a href="'.$value.'">'.$key.'</a></li>';
-			}
-			
-			$nav .= '</ul>';
+                    $nav .= '</ul></li>';
+                    
+                }
+                else $nav .= '<li><a href="'.$value.'">'.$key.'</a></li>';
+            }
+            
+            $nav .= '</ul>';
 
-			$this->replace("__NAVBAR_RIGHT__",$nav);
+            $this->replace("__NAVBAR_RIGHT__",$nav);
 
-		}
+        }
 
-		else $this->replace("__NAVBAR_RIGHT__","");
+        else $this->replace("__NAVBAR_RIGHT__","");
 
-		if ( sizeof($this->side_nav) != 0 ) {
+        if ( sizeof($this->side_nav) != 0 ) {
 
-			$nav = '<ul class="nav nav-sidebar">';
+            $nav = '<ul class="nav nav-sidebar">';
 
-			foreach ($this->side_nav as $key => $value) {
+            foreach ($this->side_nav as $key => $value) {
 
-				if ( is_array($value) ) {
+                if ( is_array($value) ) {
 
-					$nav .= '<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$key.'<span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">';
+                    $nav .= '<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$key.'<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">';
 
-					foreach ($value as $mkey => $mvalue) {
-						$nav .=  '<li><a href="' . $mvalue . '">' . $mkey . '</a></li>';
-					}
+                    foreach ($value as $mkey => $mvalue) {
+                        $nav .=  '<li><a href="' . $mvalue . '">' . $mkey . '</a></li>';
+                    }
 
-					$nav .= '</ul></li>';
-					
-				}
-				else $nav .= '<li><a href="'.$value.'">'.$key.'</a></li>';
-			}
-			
-			$nav .= '</ul>';
+                    $nav .= '</ul></li>';
+                    
+                }
+                else $nav .= '<li><a href="'.$value.'">'.$key.'</a></li>';
+            }
+            
+            $nav .= '</ul>';
 
-			$this->replace("__NAVBAR_SIDE__",$nav);
+            $this->replace("__NAVBAR_SIDE__",$nav);
 
-		}
+        }
 
-		else $this->replace("__NAVBAR_SIDE__","");
+        else $this->replace("__NAVBAR_SIDE__","");
 
-		$this->replace("__TITLE__", $this->title);
+        $this->replace("__TITLE__", $this->title);
 
-		$this->replace("__BRAND__", $this->brand);
+        $this->replace("__BRAND__", $this->brand);
 
-		$this->replace("__SCRIPTS__", implode("\n",$this->scripts));
+        $this->replace("__SCRIPTS__", implode("\n",$this->scripts));
 
-		$this->replace("__CONTENT__", $this->content);
+        $this->replace("__CONTENT__", $this->content);
 
-		$this->replace("__DISPATCHER_BASEURL__", DISPATCHER_BASEURL);
+        $this->replace("__DISPATCHER_BASEURL__", DISPATCHER_BASEURL);
 
-		return $this->template;
+        return $this->template;
 
-	}
+    }
 
 }
-
-?>
