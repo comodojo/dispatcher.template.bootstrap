@@ -16,12 +16,6 @@ class TemplateBootstrap implements TemplateInterface {
         "right" => array()
     );
 
-    // private $right_nav = array();
-
-    // private $left_nav = array();
-
-    // private $side_nav = array();
-
     private $scripts = array();
 
     private $css = array();
